@@ -118,8 +118,7 @@ Examples:
 ├── developers/
 │   └── your-name.md
 ├── challenges/
-│   └── challenge-name/
-│       ├── CHALLENGE.md
+│       └── CHALLENGE.md
 ├── projects/
 │   └── developer-name/
 │       └── project-name/
@@ -167,9 +166,8 @@ Example: `developers/alice.md`
 
 1. Identify intersection between your stack and the target dev’s stack.  
 2. Choose one extra technology (optional).  
-3. Create a folder under `challenges/challenge-name/`.  
-4. Write the challenge using the template.  
-5. Announce it to the dev and link to the challenge folder.
+3. Write the challenge using the template folder under `challenges/`.  
+4. Announce it to the dev and link to the challenge folder.
 
 ---
 
