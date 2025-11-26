@@ -1,22 +1,40 @@
-# Alice — Developer Profile
+# {{ Challenge Title }}
 
-### Primary Tech Stack
-- React, Next.js
-- TypeScript, Node.js
-- MongoDB / NoSQL
-- Auth, routing, REST APIs
+## Background
+Brief story setting the problem.
 
-### Secondary Experience
-- Python basics
-- Docker
-- Jest unit testing
+## Tech Stack Requirements
+Required technologies:
+- ...
+Optional new learning tech:
+- ...
 
-### Learning Goals
-- Improve backend architecture
-- Practice Redux or alternative state libraries
-- Strengthen testing
+## Expected Capabilities
+1. ...
+2. ...
 
-### Things I Can Review / Teach
-- Next.js structure
-- Frontend state management patterns
-- Monorepo setups
+## Functional Requirements
+- ...
+
+## Non-Functional Requirements
+- Performance
+- Accessibility
+- Clean architecture
+- Tests
+
+## Data Model
+Describe entities + relationships.
+
+## Constraints
+- Must run entirely local
+- No paid services
+- Complete within 1–2 weeks
+- Only open-source dependencies
+
+## Deliverables
+- Working project
+- README with setup instructions
+- Screenshots / video demo
+
+## Evaluation Focus
+Exactly what the reviewer will look for.
