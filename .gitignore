@@ -6,19 +6,53 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
+install.log
+*/install.log
 
 node_modules
+*/node_modules/
+**/node_modules/
 dist
 dist-ssr
+dist/
+build/
+.next/
+*/dist/
+*/build/
+*/.next/
 *.local
+
+# Environment files
+.env*
+*/.env*
+
+# Yarn files
+.yarn/
+*/.yarn/
+**/.yarn/
+.yarnrc.yml
+*/.yarnrc.yml
+yarn.lock
+*/yarn.lock
+*.tgz
+*.gz
+
+# Docker binaries and volumes
+Dockerfile
+*/Dockerfile
+docker-compose.override.yml
+*/docker-compose.override.yml
 
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
 .idea
 .DS_Store
+Thumbs.db
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+*.swp
+*.swo
