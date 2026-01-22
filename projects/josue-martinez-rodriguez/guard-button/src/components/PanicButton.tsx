@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, Animated, TouchableOpacity } from 'react-native';
-import { LongPressGestureHandler, State } from 'react-native-gesture-handler';
+import { LongPressGestureHandler, State, HandlerStateChangeEvent, LongPressGestureHandlerEventPayload } from 'react-native-gesture-handler';
 import * as Haptics from 'expo-haptics';
 import * as Sharing from 'expo-sharing';
 import { COLORS, PRESS_DURATION } from '@/utils/constants';
@@ -13,20 +13,22 @@ interface PanicButtonProps {
 export const PanicButton: React.FC<PanicButtonProps> = ({ disabled }) => {
   const { isRecording, recordingUri, error, startRecording } = useAudioRecording();
   const [pulseAnim] = useState(new Animated.Value(1));
+  const animationLoopRef = useRef<Animated.CompositeAnimation | null>(null);
 
   useEffect(() => {
     if (!isRecording) {
+      animationLoopRef.current?.stop();
       pulseAnim.stopAnimation();
       pulseAnim.setValue(1);
     }
   }, [isRecording]);
 
-  const handleLongPress = async ({ nativeEvent }: any) => {
+  const handleLongPress = async ({ nativeEvent }: HandlerStateChangeEvent<LongPressGestureHandlerEventPayload>) => {
     if (nativeEvent.state === State.ACTIVE && !disabled && !isRecording) {
       await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
       startRecording();
-      
-      Animated.loop(
+
+      animationLoopRef.current = Animated.loop(
         Animated.sequence([
           Animated.timing(pulseAnim, {
             toValue: 1.1,
@@ -39,7 +41,8 @@ export const PanicButton: React.FC<PanicButtonProps> = ({ disabled }) => {
             useNativeDriver: true,
           }),
         ])
-      ).start();
+      );
+      animationLoopRef.current.start();
     }
   };
 

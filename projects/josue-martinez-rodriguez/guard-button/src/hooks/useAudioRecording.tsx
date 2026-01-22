@@ -21,6 +21,11 @@ export const useAudioRecording = () => {
       if (recordingRef.current) {
         recordingRef.current.stopAndUnloadAsync();
       }
+      Audio.setAudioModeAsync({
+        allowsRecordingIOS: false,
+        playsInSilentModeIOS: false,
+        staysActiveInBackground: false,
+      }).catch(console.error);
     };
   }, []);
 
@@ -70,6 +75,11 @@ export const useAudioRecording = () => {
       }, RECORDING_DURATION);
     } catch (error) {
       console.error('Failed to start recording:', error);
+      await Audio.setAudioModeAsync({
+        allowsRecordingIOS: false,
+        playsInSilentModeIOS: false,
+        staysActiveInBackground: false,
+      }).catch(console.error);
       setState({
         isRecording: false,
         recordingUri: null,
@@ -84,7 +94,7 @@ export const useAudioRecording = () => {
 
       await recordingRef.current.stopAndUnloadAsync();
       const uri = recordingRef.current.getURI();
-      
+
       if (timerRef.current) {
         clearTimeout(timerRef.current);
         timerRef.current = null;
