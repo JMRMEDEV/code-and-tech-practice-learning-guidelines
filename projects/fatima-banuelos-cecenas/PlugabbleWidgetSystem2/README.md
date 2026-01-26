@@ -1,60 +1,60 @@
 # Pluggable Widget System - Developer Operations Dashboard
 
-Un sistema de dashboard pluggable y configurable construido con React y TypeScript. Este proyecto demuestra una arquitectura frontend extensible donde los widgets se registran dinámicamente y se renderizan basándose en una configuración JSON.
+A pluggable and configurable dashboard system built with React and TypeScript. This project demonstrates an extensible frontend architecture where widgets are registered dynamically and rendered based on JSON configuration.
 
-## 🎯 Características Principales
+## Key Features
 
-- **Sistema de Registro de Widgets**: Los widgets se registran centralmente y se instancian dinámicamente
-- **Renderizado Basado en Configuración**: El layout del dashboard se controla completamente mediante JSON
-- **Editor de Configuración en Tiempo Real**: Interfaz para editar la configuración y ver cambios inmediatos
-- **Lazy Loading**: Widgets pesados se cargan bajo demanda usando `React.lazy` y `Suspense`
-- **Persistencia**: La configuración se guarda automáticamente en `localStorage`
-- **Type-Safe**: Tipos TypeScript para todas las configuraciones y props de widgets
-- **Accesible**: HTML semántico y soporte para navegación por teclado
-- **Responsive**: Diseño adaptable con Tailwind CSS
+- **Widget Registration System**: Widgets are registered centrally and instantiated dynamically
+- **Configuration-Based Rendering**: The dashboard layout is fully controlled via JSON
+- **Real-Time Configuration Editor**: Interface to edit configuration and see changes immediately
+- **Lazy Loading**: Heavy widgets are loaded on demand using `React.lazy` and `Suspense`
+- **Persistence**: Configuration is automatically saved to `localStorage`
+- **Type-Safe**: TypeScript types for all configurations and widget props
+- **Accessible**: Semantic HTML and keyboard navigation support
+- **Responsive**: Adaptive design with Tailwind CSS
 
-## 🏗️ Arquitectura
+## Architecture
 
-### Estructura de Carpetas
+### Folder Structure
 
 ```
 src/
-├── core/                    # Núcleo del sistema
-│   ├── DashboardShell.tsx   # Shell principal que renderiza widgets
-│   ├── WidgetRegistry.ts    # Registro central de widgets
-│   └── types.ts             # Tipos TypeScript compartidos
-├── widgets/                 # Implementaciones de widgets
-│   ├── KpiCard/            # Widget de KPI
-│   ├── BuildStatus/        # Widget de estado de builds
-│   ├── ErrorFeed/          # Widget de feed de errores
-│   └── ChartWidget/        # Widget de gráficos (lazy loaded)
-├── components/             # Componentes compartidos
-│   └── ConfigEditor/       # Editor de configuración
-├── config/                 # Configuraciones
-│   └── defaultLayout.ts    # Layout por defecto
+├── core/                    # Core system
+│   ├── DashboardShell.tsx   # Main shell that renders widgets
+│   ├── WidgetRegistry.ts    # Central widget registry
+│   └── types.ts             # Shared TypeScript types
+├── widgets/                 # Widget implementations
+│   ├── KpiCard/            # KPI widget
+│   ├── BuildStatus/        # Build status widget
+│   ├── ErrorFeed/          # Error feed widget
+│   └── ChartWidget/        # Chart widget (lazy loaded)
+├── components/             # Shared components
+│   └── ConfigEditor/       # Configuration editor
+├── config/                 # Configurations
+│   └── defaultLayout.ts    # Default layout
 ├── hooks/                  # Custom hooks
-│   └── useDashboardConfig.ts # Hook para gestión de configuración
-├── utils/                  # Utilidades
-│   └── mockData.ts         # Generadores de datos mock
+│   └── useDashboardConfig.ts # Hook for configuration management
+├── utils/                  # Utilities
+│   └── mockData.ts         # Mock data generators
 └── __tests__/              # Tests
 ```
 
-### Flujo de Datos
+### Data Flow
 
-1. **Configuración**: El layout se define como un array de `WidgetInstance` en JSON
-2. **Registro**: Los widgets se registran en `WidgetRegistry` con sus tipos y configuraciones por defecto
-3. **Renderizado**: `DashboardShell` lee la configuración y renderiza widgets usando el registro
-4. **Persistencia**: Los cambios se guardan en `localStorage` automáticamente
+1. **Configuration**: The layout is defined as an array of `WidgetInstance` in JSON
+2. **Registration**: Widgets are registered in `WidgetRegistry` with their types and default configurations
+3. **Rendering**: `DashboardShell` reads the configuration and renders widgets using the registry
+4. **Persistence**: Changes are saved to `localStorage` automatically
 
-### Modelo de Datos
+### Data Model
 
 #### WidgetInstance
 ```typescript
 {
-  id: string;              // Identificador único
-  widgetType: string;      // Tipo de widget (debe estar en el registro)
-  position: 'left' | 'right' | 'full';  // Posición en el layout
-  config: object;          // Configuración específica del widget
+  id: string;              // Unique identifier
+  widgetType: string;      // Widget type (must exist in registry)
+  position: 'left' | 'right' | 'full';  // Position in layout
+  config: object;          // Widget-specific configuration
 }
 ```
 
@@ -70,43 +70,43 @@ src/
 }
 ```
 
-## 🚀 Inicio Rápido
+## Quick Start
 
-### Prerrequisitos
+### Prerequisites
 
 - Node.js 18+ 
-- npm, yarn o pnpm
+- npm, yarn or pnpm
 
-### Instalación
+### Installation
 
 ```bash
-# Instalar dependencias
+# Install dependencies
 npm install
 
-# Iniciar servidor de desarrollo
+# Start development server
 npm run dev
 
-# Construir para producción
+# Build for production
 npm run build
 
-# Ejecutar tests
+# Run tests
 npm test
 
-# Ejecutar tests en modo watch
+# Run tests in watch mode
 npm run test:watch
 
-# Generar reporte de cobertura
+# Generate coverage report
 npm run test:coverage
 ```
 
-El proyecto estará disponible en `http://localhost:5173`
+The project will be available at `http://localhost:5173`
 
-## 📦 Widgets Disponibles
+## Available Widgets
 
 ### 1. KPI Card (`kpiCard`)
-Muestra un indicador clave de rendimiento con valor y tendencia.
+Displays a key performance indicator with value and trend.
 
-**Configuración:**
+**Configuration:**
 ```json
 {
   "label": "Open PRs",
@@ -118,9 +118,9 @@ Muestra un indicador clave de rendimiento con valor y tendencia.
 ```
 
 ### 2. Build Status (`buildStatus`)
-Lista de estados de builds recientes con información detallada.
+List of recent build statuses with detailed information.
 
-**Configuración:**
+**Configuration:**
 ```json
 {
   "maxItems": 5,
@@ -130,9 +130,9 @@ Lista de estados de builds recientes con información detallada.
 ```
 
 ### 3. Error Feed (`errorFeed`)
-Feed de errores y logs recientes filtrados por severidad.
+Feed of recent errors and logs filtered by severity.
 
-**Configuración:**
+**Configuration:**
 ```json
 {
   "severity": "error",
@@ -142,9 +142,9 @@ Feed de errores y logs recientes filtrados por severidad.
 ```
 
 ### 4. Chart Widget (`chartWidget`)
-Gráfico de datos con diferentes tipos de visualización (línea, barras, área).
+Data chart with different visualization types (line, bar, area).
 
-**Configuración:**
+**Configuration:**
 ```json
 {
   "chartType": "line",
@@ -154,11 +154,11 @@ Gráfico de datos con diferentes tipos de visualización (línea, barras, área)
 }
 ```
 
-## 🔧 Agregar un Nuevo Widget
+## Adding a New Widget
 
-Para agregar un nuevo widget al sistema:
+To add a new widget to the system:
 
-### 1. Crear el Componente del Widget
+### 1. Create the Widget Component
 
 ```typescript
 // src/widgets/MyWidget/MyWidget.tsx
@@ -169,7 +169,7 @@ const MyWidget = memo(function MyWidget({ config }: WidgetProps<MyWidgetConfig>)
   return (
     <section className="bg-white rounded-lg shadow-md p-6">
       <h2>{config.title}</h2>
-      {/* Tu contenido aquí */}
+      {/* Your content here */}
     </section>
   );
 });
@@ -177,35 +177,35 @@ const MyWidget = memo(function MyWidget({ config }: WidgetProps<MyWidgetConfig>)
 export default MyWidget;
 ```
 
-### 2. Definir el Tipo de Configuración
+### 2. Define the Configuration Type
 
 ```typescript
 // src/core/types.ts
 export interface MyWidgetConfig {
   title: string;
-  // ... otros campos
+  // ... other fields
 }
 ```
 
-### 3. Registrar el Widget
+### 3. Register the Widget
 
 ```typescript
 // src/core/WidgetRegistry.ts
 import MyWidget from '../widgets/MyWidget/MyWidget';
 
-// En el método registerWidgets():
+// In the registerWidgets() method:
 this.register<MyWidgetConfig>({
   id: 'myWidget',
   component: MyWidget as ComponentType<WidgetProps<MyWidgetConfig>>,
   displayName: 'My Widget',
-  description: 'Descripción del widget',
+  description: 'Widget description',
   defaultConfig: {
     title: 'Default Title',
   },
 });
 ```
 
-### 4. Usar en la Configuración
+### 4. Use in Configuration
 
 ```json
 {
@@ -213,41 +213,41 @@ this.register<MyWidgetConfig>({
   "widgetType": "myWidget",
   "position": "left",
   "config": {
-    "title": "Mi Widget Personalizado"
+    "title": "My Custom Widget"
   }
 }
 ```
 
-## 🎨 Personalización
+## Customization
 
-### Estilos
+### Styles
 
-El proyecto usa Tailwind CSS. Puedes personalizar los estilos en:
-- `tailwind.config.js` - Configuración de Tailwind
-- `src/index.css` - Estilos globales
+The project uses Tailwind CSS. You can customize styles in:
+- `tailwind.config.js` - Tailwind configuration
+- `src/index.css` - Global styles
 
 ### Layout
 
-El layout se controla mediante la propiedad `position` de cada widget:
-- `left`: Columna izquierda (en pantallas grandes)
-- `right`: Columna derecha (en pantallas grandes)
-- `full`: Ancho completo
+The layout is controlled via the `position` property of each widget:
+- `left`: Left column (on large screens)
+- `right`: Right column (on large screens)
+- `full`: Full width
 
-## 🧪 Testing
+## Testing
 
-Los tests están ubicados en `src/__tests__/` y cubren:
+Tests are located in `src/__tests__/` and cover:
 
-- Renderizado del dashboard basado en configuración
-- Registro de widgets
-- Componentes individuales de widgets
-- Manejo de errores (widgets desconocidos, configuraciones inválidas)
+- Dashboard rendering based on configuration
+- Widget registry
+- Individual widget components
+- Error handling (unknown widgets, invalid configurations)
 
-Ejecutar tests:
+Run tests:
 ```bash
 npm test
 ```
 
-## 📝 Ejemplo de Configuración
+## Configuration Example
 
 ```json
 [
@@ -296,70 +296,70 @@ npm test
 ]
 ```
 
-## 🎯 Principios de Diseño
+## Design Principles
 
-### Separación de Responsabilidades
-- **DashboardShell**: Solo se encarga del layout y renderizado
-- **WidgetRegistry**: Gestiona el registro y búsqueda de widgets
-- **Widgets**: Componentes puros que reciben props y renderizan
+### Separation of Concerns
+- **DashboardShell**: Only handles layout and rendering
+- **WidgetRegistry**: Manages widget registration and lookup
+- **Widgets**: Pure components that receive props and render
 
-### Extensibilidad
-- Agregar un widget solo requiere crear el componente y registrarlo
-- No se necesita modificar el shell ni otros widgets
+### Extensibility
+- Adding a widget only requires creating the component and registering it
+- No need to modify the shell or other widgets
 
 ### Type Safety
-- Todos los tipos están definidos en TypeScript
-- Las configuraciones son type-safe
-- El registro valida tipos en tiempo de compilación
+- All types are defined in TypeScript
+- Configurations are type-safe
+- Registry validates types at compile time
 
 ### Performance
-- Widgets memoizados para evitar re-renders innecesarios
-- Lazy loading para widgets pesados
-- Datos mock generados eficientemente
+- Memoized widgets to avoid unnecessary re-renders
+- Lazy loading for heavy widgets
+- Efficiently generated mock data
 
-## 🔍 Tecnologías Utilizadas
+## Technologies Used
 
-- **React 19** - Framework UI
+- **React 19** - UI framework
 - **TypeScript** - Type safety
-- **Vite** - Build tool y dev server
-- **Tailwind CSS** - Estilos utility-first
+- **Vite** - Build tool and dev server
+- **Tailwind CSS** - Utility-first styles
 - **Jest** - Testing framework
-- **React Testing Library** - Testing de componentes
+- **React Testing Library** - Component testing
 
-## 📄 Licencia
+## License
 
-Este proyecto es un ejemplo educativo y está disponible para uso libre.
+This project is an educational example and is available for free use.
 
-## 🤝 Contribuciones
+## Contributing
 
-Este es un proyecto de demostración, pero las mejoras y sugerencias son bienvenidas:
+This is a demonstration project, but improvements and suggestions are welcome:
 
-1. Fork el proyecto
-2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
-3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
-4. Push a la rama (`git push origin feature/AmazingFeature`)
-5. Abre un Pull Request
+1. Fork the project
+2. Create a branch for your feature (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-## 📸 Capturas de Pantalla
+## Screenshots
 
-El dashboard incluye:
-- Header con título y descripción
-- Editor de configuración colapsable
-- Grid responsive con widgets en diferentes posiciones
-- Soporte para modo oscuro
-- Indicadores visuales para estados y tendencias
+The dashboard includes:
+- Header with title and description
+- Collapsible configuration editor
+- Responsive grid with widgets in different positions
+- Dark mode support
+- Visual indicators for status and trends
 
-## 🚧 Mejoras Futuras
+## Future Improvements
 
-- [ ] Drag & drop para reordenar widgets
-- [ ] Más tipos de gráficos
-- [ ] Integración con APIs reales
-- [ ] Temas personalizables
-- [ ] Exportar/importar configuraciones
-- [ ] Widgets con actualización en tiempo real
-- [ ] Sistema de permisos por widget
-- [ ] Modo de vista previa antes de aplicar cambios
+- [ ] Drag & drop to reorder widgets
+- [ ] More chart types
+- [ ] Integration with real APIs
+- [ ] Customizable themes
+- [ ] Export/import configurations
+- [ ] Real-time updating widgets
+- [ ] Per-widget permission system
+- [ ] Preview mode before applying changes
 
 ---
 
-**Desarrollado como parte de un desafío de arquitectura frontend** 🚀
+**Developed as part of a frontend architecture challenge**

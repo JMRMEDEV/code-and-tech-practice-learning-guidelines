@@ -22,12 +22,12 @@ const ConfigEditor = memo(function ConfigEditor({
     try {
       const parsed = JSON.parse(jsonInput) as DashboardLayout;
       
-      // Validación básica
+      // Basic validation
       if (!Array.isArray(parsed)) {
         throw new Error('Layout must be an array');
       }
 
-      // Validar estructura de cada widget
+      // Validate each widget structure
       for (const widget of parsed) {
         if (!widget.id || !widget.widgetType || !widget.position) {
           throw new Error('Each widget must have id, widgetType, and position');

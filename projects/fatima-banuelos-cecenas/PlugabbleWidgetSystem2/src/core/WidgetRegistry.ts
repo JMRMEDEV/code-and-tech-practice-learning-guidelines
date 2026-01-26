@@ -9,17 +9,17 @@ import type {
   ChartWidgetConfig,
 } from './types';
 
-// Importaciones estáticas para widgets más ligeros
+// Static imports for lighter widgets
 import KpiCard from '../widgets/KpiCard/KpiCard';
 import BuildStatus from '../widgets/BuildStatus/BuildStatus';
 import ErrorFeed from '../widgets/ErrorFeed/ErrorFeed';
 
-// Lazy loading para el widget de gráficos (más pesado)
+// Lazy loading for the chart widget (heavier)
 const ChartWidget = lazy(() => import('../widgets/ChartWidget/ChartWidget'));
 
 /**
- * Registro central de widgets
- * Cada widget debe ser registrado aquí con su tipo, componente y configuración por defecto
+ * Central widget registry
+ * Each widget must be registered here with its type, component and default configuration
  */
 class WidgetRegistry {
   private widgets: Map<string, WidgetType> = new Map();
@@ -29,7 +29,7 @@ class WidgetRegistry {
   }
 
   /**
-   * Registra todos los widgets disponibles en el sistema
+   * Registers all available widgets in the system
    */
   private registerWidgets(): void {
     // KPI Card Widget
@@ -37,7 +37,7 @@ class WidgetRegistry {
       id: 'kpiCard',
       component: KpiCard as ComponentType<WidgetProps<KpiCardConfig>>,
       displayName: 'KPI Card',
-      description: 'Muestra un indicador clave de rendimiento con valor y tendencia',
+      description: 'Displays a key performance indicator with value and trend',
       defaultConfig: {
         label: 'Open PRs',
         value: 0,
@@ -51,7 +51,7 @@ class WidgetRegistry {
       id: 'buildStatus',
       component: BuildStatus as ComponentType<WidgetProps<BuildStatusConfig>>,
       displayName: 'Build Status',
-      description: 'Lista de estados de builds recientes',
+      description: 'List of recent build statuses',
       defaultConfig: {
         maxItems: 5,
         highlightFailed: true,
@@ -64,7 +64,7 @@ class WidgetRegistry {
       id: 'errorFeed',
       component: ErrorFeed as ComponentType<WidgetProps<ErrorFeedConfig>>,
       displayName: 'Error Feed',
-      description: 'Feed de errores y logs recientes',
+      description: 'Feed of recent errors and logs',
       defaultConfig: {
         severity: 'error',
         maxItems: 10,
@@ -77,7 +77,7 @@ class WidgetRegistry {
       id: 'chartWidget',
       component: ChartWidget as ComponentType<WidgetProps<ChartWidgetConfig>>,
       displayName: 'Chart Widget',
-      description: 'Gráfico de datos con diferentes tipos de visualización',
+      description: 'Data chart with different visualization types',
       defaultConfig: {
         chartType: 'line',
         dataPoints: 7,
@@ -88,7 +88,7 @@ class WidgetRegistry {
   }
 
   /**
-   * Registra un nuevo widget en el registro
+   * Registers a new widget in the registry
    */
   private register<TConfig = Record<string, unknown>>(
     widgetType: Omit<WidgetType<TConfig>, 'defaultConfig'> & { defaultConfig: TConfig }
@@ -97,27 +97,27 @@ class WidgetRegistry {
   }
 
   /**
-   * Obtiene un widget por su ID
+   * Gets a widget by its ID
    */
   getWidget(widgetId: string): WidgetType | undefined {
     return this.widgets.get(widgetId);
   }
 
   /**
-   * Obtiene todos los widgets registrados
+   * Gets all registered widgets
    */
   getAllWidgets(): WidgetType[] {
     return Array.from(this.widgets.values());
   }
 
   /**
-   * Verifica si un widget existe en el registro
+   * Checks if a widget exists in the registry
    */
   hasWidget(widgetId: string): boolean {
     return this.widgets.has(widgetId);
   }
 }
 
-// Exportar instancia singleton
+// Export singleton instance
 export const widgetRegistry = new WidgetRegistry();
 export default widgetRegistry;

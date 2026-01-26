@@ -1,7 +1,7 @@
 import type { DashboardLayout } from '../core/types';
 
 /**
- * Configuración por defecto del layout del dashboard
+ * Default dashboard layout configuration
  */
 export const defaultLayout: DashboardLayout = [
   {

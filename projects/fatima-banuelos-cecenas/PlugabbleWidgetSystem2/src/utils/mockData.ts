@@ -1,5 +1,5 @@
 /**
- * Utilidades para generar datos mock para los widgets
+ * Utilities to generate mock data for widgets
  */
 
 export interface BuildItem {
@@ -25,7 +25,7 @@ export interface ChartDataPoint {
 }
 
 /**
- * Genera builds mock
+ * Generates mock builds
  */
 export function generateMockBuilds(count: number = 10): BuildItem[] {
   const statuses: BuildItem['status'][] = ['success', 'failed', 'running', 'pending'];
@@ -43,7 +43,7 @@ export function generateMockBuilds(count: number = 10): BuildItem[] {
 }
 
 /**
- * Genera logs de error mock
+ * Generates mock error logs
  */
 export function generateMockErrorLogs(
   count: number = 20,
@@ -76,7 +76,7 @@ export function generateMockErrorLogs(
 }
 
 /**
- * Genera datos para gráficos
+ * Generates data for charts
  */
 export function generateMockChartData(
   count: number = 7,
@@ -92,7 +92,7 @@ export function generateMockChartData(
 }
 
 /**
- * Formatea una fecha para mostrar en la UI
+ * Formats a date for display in the UI
  */
 export function formatTimestamp(date: Date): string {
   const now = new Date();

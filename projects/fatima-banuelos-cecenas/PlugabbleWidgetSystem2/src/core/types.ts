@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 
 /**
- * Configuración base que todos los widgets deben aceptar
+ * Base configuration that all widgets must accept
  */
 export interface WidgetProps<TConfig = Record<string, unknown>> {
   id: string;
@@ -9,7 +9,7 @@ export interface WidgetProps<TConfig = Record<string, unknown>> {
 }
 
 /**
- * Definición de un tipo de widget en el registro
+ * Definition of a widget type in the registry
  */
 export interface WidgetType<TConfig = Record<string, unknown>> {
   id: string;
@@ -21,7 +21,7 @@ export interface WidgetType<TConfig = Record<string, unknown>> {
 }
 
 /**
- * Instancia de widget en el layout
+ * Widget instance in the layout
  */
 export interface WidgetInstance {
   id: string;
@@ -31,12 +31,12 @@ export interface WidgetInstance {
 }
 
 /**
- * Configuración completa del layout del dashboard
+ * Complete dashboard layout configuration
  */
 export type DashboardLayout = WidgetInstance[];
 
 /**
- * Configuraciones específicas para cada tipo de widget
+ * Specific configurations for each widget type
  */
 export interface KpiCardConfig {
   label: string;

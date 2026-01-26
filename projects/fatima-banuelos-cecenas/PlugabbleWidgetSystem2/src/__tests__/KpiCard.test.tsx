@@ -15,7 +15,7 @@ describe('KpiCard', () => {
     render(<KpiCard id="test-kpi" config={mockConfig} />);
     
     expect(screen.getByText('Test KPI')).toBeInTheDocument();
-    // El formato puede variar según locale, así que buscamos el número de forma flexible
+    // Format may vary by locale, so we match the number flexibly
     expect(screen.getByText(/1234|1,234|1\.234/)).toBeInTheDocument();
     expect(screen.getByText(/items/i)).toBeInTheDocument();
   });

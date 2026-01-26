@@ -26,7 +26,7 @@ describe('DashboardShell', () => {
   it('renders widgets based on layout configuration', () => {
     render(<DashboardShell layout={mockLayout} />);
     
-    // Verificar que los widgets se renderizan
+    // Verify that the widgets are rendered
     expect(screen.getByText(/Test KPI/i)).toBeInTheDocument();
     expect(screen.getByText(/Build Status/i)).toBeInTheDocument();
   });

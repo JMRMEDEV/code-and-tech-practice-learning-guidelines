@@ -29,7 +29,7 @@ const DashboardShell = memo(function DashboardShell({ layout }: DashboardShellPr
 
     const WidgetComponent = widgetType.component;
 
-    // Determinar si el widget necesita lazy loading (ChartWidget)
+    // Determine if the widget needs lazy loading (ChartWidget)
     const needsSuspense = instance.widgetType === 'chartWidget';
 
     const widgetElement = (
