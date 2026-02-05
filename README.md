@@ -1,288 +1,365 @@
-# 📘 Developer Practice Challenges — Collaborative Learning Repo
+# Pluggable Widget System - Developer Operations Dashboard
 
-Welcome to the **Developer Practice Challenges** repository!  
-This space exists for a group of teammates with diverse tech stacks to **help each other grow** through practical, real-world mini-projects.
+Un sistema de dashboard pluggable y configurable construido con React y TypeScript. Este proyecto demuestra una arquitectura frontend extensible donde los widgets se registran dinámicamente y se renderizan basándose en una configuración JSON.
 
-The goal is simple:
+## 🎯 Características Principales
 
-> **Strengthen our skills by designing and solving small, realistic technical challenges for one another, based on overlapping tech expertise.**
+- **Sistema de Registro de Widgets**: Los widgets se registran centralmente y se instancian dinámicamente
+- **Renderizado Basado en Configuración**: El layout del dashboard se controla completamente mediante JSON
+- **Editor de Configuración en Tiempo Real**: Interfaz para editar la configuración y ver cambios inmediatos
+- **Lazy Loading**: Widgets pesados se cargan bajo demanda usando `React.lazy` y `Suspense`
+- **Persistencia**: La configuración se guarda automáticamente en `localStorage`
+- **Type-Safe**: Tipos TypeScript para todas las configuraciones y props de widgets
+- **Accesible**: HTML semántico y soporte para navegación por teclado
+- **Responsive**: Diseño adaptable con Tailwind CSS
 
-This README defines the rules, workflow, expectations, and conventions for creating and solving challenges.
+## 🏗️ Arquitectura
 
----
-
-## 🧩 Purpose
-
-Modern engineering teams often mix developers and QA engineers with different backgrounds—frontend, backend, fullstack, and automation. This repo enables us to:
-
-- Practice technologies we know and want to reinforce  
-- Learn adjacent tech from teammates who use it daily  
-- Identify individual skill gaps  
-- Grow through code reviews and shared patterns  
-- Build real mini-projects instead of trivial code exercises  
-- Improve team-wide architecture, testing, and design skills
-
-Challenges in this repo are **project-based**, not algorithm puzzle–based.
-
----
-
-## 👥 Who This Repo Is For
-
-Anyone on the team who wants to learn, practice, or teach:
-
-- Frontend (React, Next.js, Zustand, Redux, CSS-in-JS, etc.)
-- Backend (Node.js, Python, Java, Express, FastAPI, Spring, etc.)
-- Fullstack (API + frontend together)
-- Databases (SQL, NoSQL, Prisma, Mongo, Postgres, etc.)
-- Testing (unit, integration, E2E)
-- Infrastructure (Docker, local Kubernetes, CI/CD concepts)
-- Architecture and design patterns
-
-No matter your level or stack, you can **assign** challenges and **receive** challenges based on skill overlap.
-
----
-
-# 🔗 Tech Stack Intersection Rules
-
-To assign a challenge:
-
-1. Every developer must declare their **primary tech stack** in `developers/your-name.md`.
-2. When proposing a challenge, you must **use the intersection** of your tech stack and the target developer’s stack.
-3. You *may* include **one new technology** for learning purposes, as long as:
-   - It’s reasonably easy to pick up
-   - It is **free and open-source**
-   - It fits the challenge scope
-
-### Example
-
-You know: **Next.js, React, Redux, Node, TS**  
-Frontend Dev knows: **React, Zustand, Styled Components**
-
-Intersection → **React + TypeScript**  
-Optional new tech for growth → **Redux** (replacing Zustand)
-
----
-
-# 🧠 Challenge Requirements
-
-Every challenge must:
-
-### ✔ Be a **small project** (not trivial, not huge)
-- Solvable within **5–10 workdays**  
-- Preferably **1 week** of effort  
-- Must NOT require cloud services with cost (AWS/GCP, paid APIs)
-
-### ✔ Be real-world oriented
-Focus on:
-- Architecture
-- Maintainability
-- Reliability
-- Testing
-- State management
-- API design
-- Error handling
-- UX
-- Data modeling
-
-### ✔ Be scoped clearly
-Every challenge must define:
-- Background / story  
-- Requirements  
-- Expected capabilities  
-- Data model  
-- Tech stack requirements  
-- Constraints  
-- Evaluation criteria  
-- Deliverables  
-
-### ✔ Be free & offline friendly
-Only allow tech that:
-- Runs locally  
-- Is free and open-source  
-- Requires no paid external API/services  
-
-### ✔ Include learning goals
-Examples:
-- Use Redux instead of Zustand  
-- Learn FastAPI  
-- Build Dockerized services locally  
-- Use Jest, Vitest, PyTest, or JUnit  
-
----
-
-# 📁 Repo Structure
+### Estructura de Carpetas
 
 ```
-.
-├── README.md
-├── developers/
-│   └── your-name.md
-├── challenges/
-│       └── CHALLENGE.md
-├── projects/
-│   └── developer-name/
-│       └── project-name/
-└── templates/
-    ├── CHALLENGE_TEMPLATE.md
-    └── DEVELOPER_PROFILE_TEMPLATE.md
+src/
+├── core/                    # Núcleo del sistema
+│   ├── DashboardShell.tsx   # Shell principal que renderiza widgets
+│   ├── WidgetRegistry.ts    # Registro central de widgets
+│   └── types.ts             # Tipos TypeScript compartidos
+├── widgets/                 # Implementaciones de widgets
+│   ├── KpiCard/            # Widget de KPI
+│   ├── BuildStatus/        # Widget de estado de builds
+│   ├── ErrorFeed/          # Widget de feed de errores
+│   └── ChartWidget/        # Widget de gráficos (lazy loaded)
+├── components/             # Componentes compartidos
+│   └── ConfigEditor/       # Editor de configuración
+├── config/                 # Configuraciones
+│   └── defaultLayout.ts    # Layout por defecto
+├── hooks/                  # Custom hooks
+│   └── useDashboardConfig.ts # Hook para gestión de configuración
+├── utils/                  # Utilidades
+│   └── mockData.ts         # Generadores de datos mock
+└── __tests__/              # Tests
 ```
 
----
+### Flujo de Datos
 
-# 🧑‍💻 Developer Profile Format
+1. **Configuración**: El layout se define como un array de `WidgetInstance` en JSON
+2. **Registro**: Los widgets se registran en `WidgetRegistry` con sus tipos y configuraciones por defecto
+3. **Renderizado**: `DashboardShell` lee la configuración y renderiza widgets usando el registro
+4. **Persistencia**: Los cambios se guardan en `localStorage` automáticamente
 
-Each developer must add a file under `developers/`.
+### Modelo de Datos
 
-Example: `developers/alice.md`
-
-```
-# Alice — Developer Profile
-
-### Primary Tech Stack
-- React, Next.js
-- TypeScript, Node.js
-- MongoDB / NoSQL
-- Auth, routing, REST APIs
-
-### Secondary Experience
-- Python basics
-- Docker
-- Jest unit testing
-
-### Learning Goals
-- Improve backend architecture
-- Practice Redux or alternative state libraries
-- Strengthen testing
-
-### Things I Can Review / Teach
-- Next.js structure
-- Frontend state management patterns
-- Monorepo setups
+#### WidgetInstance
+```typescript
+{
+  id: string;              // Identificador único
+  widgetType: string;      // Tipo de widget (debe estar en el registro)
+  position: 'left' | 'right' | 'full';  // Posición en el layout
+  config: object;          // Configuración específica del widget
+}
 ```
 
----
-
-# 📤 How to Assign a Challenge
-
-1. Identify intersection between your stack and the target dev’s stack.  
-2. Choose one extra technology (optional).  
-3. Write the challenge using the template folder under `challenges/`.  
-4. Announce it to the dev and link to the challenge folder.
-
----
-
-# 📝 How to Work on a Challenge
-
-1. Understand the challenge and clarify doubts early.
-2. Build the project on your local machine.
-3. Follow the tech stack requirements & constraints.
-4. Test everything.
-5. When completed:
-
-### ➡️ Submit a PR:
-- **Base branch:** `main`
-- **PR target folder:** `projects/{{your-name}}/{{challenge-name}}`
-- **Reviewer:** the author of the challenge
-- Include:
-  - Screenshots
-  - Videos
-  - Notes or trade-offs you made
-  - Instructions for running the project
-
----
-
-# 🧪 Evaluation Criteria
-
-Reviewers must evaluate based on the challenge’s declared criteria, but in general:
-
-### 📦 Architecture & Structure
-Clean, organized, understandable folders.
-
-### 🧠 Code Quality
-Readable, typed, maintainable.
-
-### ⚙️ Correctness
-Meets functional requirements.
-
-### 🔄 State & Data Handling
-Correct async handling, selectors, consistency between FE/BE.
-
-### 🧪 Testing Quality
-Unit, integration, E2E (if part of challenge).
-
-### 🎨 UX & Accessibility (frontend)
-Keyboard navigation, ARIA basics, proper disable/hide logic.
-
-### 🔒 Security (UI- or API-level)
-Do not expose unauthorized actions.
-
-### 📚 Documentation
-README + setup + clarity.
-
----
-
-# 📦 Challenge Template
-
-```
-# {{ Challenge Title }}
-
-## Background
-Brief story setting the problem.
-
-## Tech Stack Requirements
-Required technologies:
-- ...
-Optional new learning tech:
-- ...
-
-## Expected Capabilities
-1. ...
-2. ...
-
-## Functional Requirements
-- ...
-
-## Non-Functional Requirements
-- Performance
-- Accessibility
-- Clean architecture
-- Tests
-
-## Data Model
-Describe entities + relationships.
-
-## Constraints
-- Must run entirely local
-- No paid services
-- Complete within 1–2 weeks
-- Only open-source dependencies
-
-## Deliverables
-- Working project
-- README with setup instructions
-- Screenshots / video demo
-
-## Evaluation Focus
-Exactly what the reviewer will look for.
+#### WidgetType
+```typescript
+{
+  id: string;
+  component: React.ComponentType;
+  displayName: string;
+  description?: string;
+  defaultConfig: object;
+  icon?: ReactNode | string;
+}
 ```
 
+## 🚀 Inicio Rápido
+
+### Prerrequisitos
+
+- Node.js 18+ 
+- npm, yarn o pnpm
+
+### Instalación
+
+```bash
+# Instalar dependencias
+npm install
+
+# Iniciar servidor de desarrollo
+npm run dev
+
+# Construir para producción
+npm run build
+
+# Ejecutar tests
+npm test
+
+# Ejecutar tests en modo watch
+npm run test:watch
+
+# Generar reporte de cobertura
+npm run test:coverage
+```
+
+El proyecto estará disponible en `http://localhost:5173`
+
+## 📦 Widgets Disponibles
+
+### 1. KPI Card (`kpiCard`)
+Muestra un indicador clave de rendimiento con valor y tendencia.
+
+**Configuración:**
+```json
+{
+  "label": "Open PRs",
+  "value": 12,
+  "trend": "up",
+  "trendValue": 3,
+  "unit": ""
+}
+```
+
+### 2. Build Status (`buildStatus`)
+Lista de estados de builds recientes con información detallada.
+
+**Configuración:**
+```json
+{
+  "maxItems": 5,
+  "highlightFailed": true,
+  "environment": "staging"
+}
+```
+
+### 3. Error Feed (`errorFeed`)
+Feed de errores y logs recientes filtrados por severidad.
+
+**Configuración:**
+```json
+{
+  "severity": "error",
+  "maxItems": 10,
+  "showTimestamp": true
+}
+```
+
+### 4. Chart Widget (`chartWidget`)
+Gráfico de datos con diferentes tipos de visualización (línea, barras, área).
+
+**Configuración:**
+```json
+{
+  "chartType": "line",
+  "dataPoints": 7,
+  "showLegend": true,
+  "title": "Builds per Day"
+}
+```
+
+## 🔧 Agregar un Nuevo Widget
+
+Para agregar un nuevo widget al sistema:
+
+### 1. Crear el Componente del Widget
+
+```typescript
+// src/widgets/MyWidget/MyWidget.tsx
+import { memo } from 'react';
+import { WidgetProps, MyWidgetConfig } from '../../core/types';
+
+const MyWidget = memo(function MyWidget({ config }: WidgetProps<MyWidgetConfig>) {
+  return (
+    <section className="bg-white rounded-lg shadow-md p-6">
+      <h2>{config.title}</h2>
+      {/* Tu contenido aquí */}
+    </section>
+  );
+});
+
+export default MyWidget;
+```
+
+### 2. Definir el Tipo de Configuración
+
+```typescript
+// src/core/types.ts
+export interface MyWidgetConfig {
+  title: string;
+  // ... otros campos
+}
+```
+
+### 3. Registrar el Widget
+
+```typescript
+// src/core/WidgetRegistry.ts
+import MyWidget from '../widgets/MyWidget/MyWidget';
+
+// En el método registerWidgets():
+this.register<MyWidgetConfig>({
+  id: 'myWidget',
+  component: MyWidget as ComponentType<WidgetProps<MyWidgetConfig>>,
+  displayName: 'My Widget',
+  description: 'Descripción del widget',
+  defaultConfig: {
+    title: 'Default Title',
+  },
+});
+```
+
+### 4. Usar en la Configuración
+
+```json
+{
+  "id": "w5",
+  "widgetType": "myWidget",
+  "position": "left",
+  "config": {
+    "title": "Mi Widget Personalizado"
+  }
+}
+```
+
+## 🎨 Personalización
+
+### Estilos
+
+El proyecto usa Tailwind CSS. Puedes personalizar los estilos en:
+- `tailwind.config.js` - Configuración de Tailwind
+- `src/index.css` - Estilos globales
+
+### Layout
+
+El layout se controla mediante la propiedad `position` de cada widget:
+- `left`: Columna izquierda (en pantallas grandes)
+- `right`: Columna derecha (en pantallas grandes)
+- `full`: Ancho completo
+
+## 🧪 Testing
+
+Los tests están ubicados en `src/__tests__/` y cubren:
+
+- Renderizado del dashboard basado en configuración
+- Registro de widgets
+- Componentes individuales de widgets
+- Manejo de errores (widgets desconocidos, configuraciones inválidas)
+
+Ejecutar tests:
+```bash
+npm test
+```
+
+## 📝 Ejemplo de Configuración
+
+```json
+[
+  {
+    "id": "w1",
+    "widgetType": "kpiCard",
+    "position": "left",
+    "config": {
+      "label": "Open PRs",
+      "value": 12,
+      "trend": "up",
+      "trendValue": 3
+    }
+  },
+  {
+    "id": "w2",
+    "widgetType": "buildStatus",
+    "position": "left",
+    "config": {
+      "maxItems": 5,
+      "highlightFailed": true,
+      "environment": "staging"
+    }
+  },
+  {
+    "id": "w3",
+    "widgetType": "errorFeed",
+    "position": "right",
+    "config": {
+      "severity": "error",
+      "maxItems": 10,
+      "showTimestamp": true
+    }
+  },
+  {
+    "id": "w4",
+    "widgetType": "chartWidget",
+    "position": "full",
+    "config": {
+      "chartType": "line",
+      "dataPoints": 7,
+      "showLegend": true,
+      "title": "Builds per Day"
+    }
+  }
+]
+```
+
+## 🎯 Principios de Diseño
+
+### Separación de Responsabilidades
+- **DashboardShell**: Solo se encarga del layout y renderizado
+- **WidgetRegistry**: Gestiona el registro y búsqueda de widgets
+- **Widgets**: Componentes puros que reciben props y renderizan
+
+### Extensibilidad
+- Agregar un widget solo requiere crear el componente y registrarlo
+- No se necesita modificar el shell ni otros widgets
+
+### Type Safety
+- Todos los tipos están definidos en TypeScript
+- Las configuraciones son type-safe
+- El registro valida tipos en tiempo de compilación
+
+### Performance
+- Widgets memoizados para evitar re-renders innecesarios
+- Lazy loading para widgets pesados
+- Datos mock generados eficientemente
+
+## 🔍 Tecnologías Utilizadas
+
+- **React 19** - Framework UI
+- **TypeScript** - Type safety
+- **Vite** - Build tool y dev server
+- **Tailwind CSS** - Estilos utility-first
+- **Jest** - Testing framework
+- **React Testing Library** - Testing de componentes
+
+## 📄 Licencia
+
+Este proyecto es un ejemplo educativo y está disponible para uso libre.
+
+## 🤝 Contribuciones
+
+Este es un proyecto de demostración, pero las mejoras y sugerencias son bienvenidas:
+
+1. Fork el proyecto
+2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
+3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
+4. Push a la rama (`git push origin feature/AmazingFeature`)
+5. Abre un Pull Request
+
+## 📸 Capturas de Pantalla
+
+El dashboard incluye:
+- Header con título y descripción
+- Editor de configuración colapsable
+- Grid responsive con widgets en diferentes posiciones
+- Soporte para modo oscuro
+- Indicadores visuales para estados y tendencias
+
+## 🚧 Mejoras Futuras
+
+- [ ] Drag & drop para reordenar widgets
+- [ ] Más tipos de gráficos
+- [ ] Integración con APIs reales
+- [ ] Temas personalizables
+- [ ] Exportar/importar configuraciones
+- [ ] Widgets con actualización en tiempo real
+- [ ] Sistema de permisos por widget
+- [ ] Modo de vista previa antes de aplicar cambios
+
 ---
 
-# 🤝 Collaboration Philosophy
-
-We do this to **support each other**, not to judge.
-
-- Be kind and constructive in reviews  
-- Explain reasoning, not just corrections  
-- Share design patterns and best practices  
-- Encourage learning new tools and approaches  
-- Celebrate each completed challenge 🎉
-
----
-
-# 🚀 Ready to Start?
-
-1. Add your profile under `developers/`.
-2. Read challenges or create new ones.
-3. Pick a teammate and propose a challenge.
-4. Build cool things together.
+**Desarrollado como parte de un desafío de arquitectura frontend** 🚀

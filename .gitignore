@@ -1,7 +1,30 @@
-# Global ignores for all projects
-node_modules/
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+install.log
+*/install.log
+
+node_modules
 */node_modules/
 **/node_modules/
+dist
+dist-ssr
+dist/
+build/
+.next/
+*/dist/
+*/build/
+*/.next/
+*.local
+
+# Environment files
+.env*
+*/.env*
 
 # Yarn files
 .yarn/
@@ -14,36 +37,22 @@ yarn.lock
 *.tgz
 *.gz
 
-# Build outputs
-dist/
-build/
-.next/
-*/dist/
-*/build/
-*/.next/
-
-# Environment files
-.env*
-*/.env*
-
-# Logs
-*.log
-.log
-install.log
-*/install.log
-
 # Docker binaries and volumes
 Dockerfile
 */Dockerfile
 docker-compose.override.yml
 */docker-compose.override.yml
 
-# OS files
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
 .DS_Store
 Thumbs.db
-
-# IDE files
-.vscode/
-.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
 *.swp
 *.swo
